@@ -107,16 +107,29 @@ echo "
                 <tr><th>Tel.</th><td>" . htmlspecialchars($row[4]) . "</td></tr>
             </table>
             <h3 style='margin-top: 20px;'>Receipts</h3>
-            <ul class='receipt-links'>
-";
+<table class='receipt-table'>
+        <thead>
+            <tr>
+                <th>Transaction ID</th>
+                <th>Timestamp</th>
+                <th>Receipt</th>
+            </tr>
+        </thead>
+        <tbody>";
+        
 $prepTrans = "SELECT IDtransaction, Timestamp FROM Transaction WHERE IDCust='$id'";
 $msresult = mysqli_query($conn, $prepTrans);
-while ($row = mysqli_fetch_row($msresult)) {
-    echo "<li><a href='reciepts/" . htmlspecialchars($row[0]) . ".pdf'>" . htmlspecialchars($row[0]) . " - " . htmlspecialchars($row[1]) . "</a></li>";
-}
 
+while ($row = mysqli_fetch_row($msresult)) {
+    echo "<tr>
+            <td>" . htmlspecialchars($row[0]) . "</td>
+            <td>" . htmlspecialchars($row[1]) . "</td>
+            <td><a href='reciepts/" . htmlspecialchars($row[0]) . ".pdf'>View Receipt</a></td>
+          </tr>";
+}
 echo "
-            </ul>
+        </tbody>
+      </table>
         </div>
 
         <!-- Back Button -->

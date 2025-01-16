@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,95 +8,100 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #6666CC;
-            color: #000099;
             margin: 0;
             padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
         }
+
         .form-container {
-            background-color: #FFFFFF;
+            width: 80%;
+            max-width: 600px;
+            margin: 20px auto;
             padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
             text-align: center;
-            width: 90%;
-            max-width: 500px;
+            color: #333333;
         }
-        .form-container h1 {
-            color: #000033;
-            margin-bottom: 20px;
+
+        form {
+            margin-top: 20px;
         }
-        .form-container hr {
-            border: 1px solid blue;
-            margin: 10px 0 20px;
-        }
-        .form-container label {
-            display: block;
+
+        label {
+            display: inline-block;
+            width: 100px;
             margin-bottom: 10px;
-            font-weight: bold;
-            color: #000033;
+            color: #555555;
         }
-        .form-container input[type="text"] {
-            width: 100%;
+
+        input[type="text"] {
+            width: calc(100% - 110px);
             padding: 8px;
-            margin-bottom: 20px;
-            border: 1px solid #CCC;
-            border-radius: 5px;
-            font-size: 16px;
+            margin-bottom: 10px;
+            border: 1px solid #cccccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
         }
-        .form-container input[type="submit"],
-        .form-container input[type="reset"] {
-            padding: 10px 20px;
-            font-size: 16px;
-            border: none;
-            border-radius: 5px;
+
+        input[type="submit"],
+        input[type="reset"] {
+            color: white;
             cursor: pointer;
-            margin: 0 5px;
         }
-        .form-container input[type="submit"] {
-            background-color: #4CAF50;
+
+        input[type="submit"]:hover {
+            background-color: #999999;
+        }
+
+        input[type="button"],
+        input[type="submit"] {
+            background-color: #aaaaaa;
             color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            margin-top: 10px;
+            cursor: pointer;
+            border-radius: 4px;
         }
-        .form-container input[type="reset"] {
-            background-color: #F44336;
-            color: white;
-        }
-        .form-container input[type="submit"]:hover {
-            background-color: #45a049;
-        }
-        .form-container input[type="reset"]:hover {
-            background-color: #e53935;
+
+        input[type="button"]:hover {
+            background-color: #999999;
         }
     </style>
 </head>
-<body>
-    <div class="form-container">
-        <h1>เพิ่มผู้ใช้งาน</h1>
-        <hr>
-        <form action="Insert_Form.php" method="POST">
-            <label for="a1">รหัส</label>
-            <input type="text" id="a1" name="a1" size="4" maxlength="4">
 
+<body>
+    <h1>เพิ่มผู้ใช้งาน</h1>
+    <hr>
+    <div class="form-container">
+        <form action="Insert_Form.php" method="POST">
+            <label for="a1">ID</label>
+            <input type="text" id="a1" name="a1" size="4" maxlength="4">
+            <br>
             <label for="a2">ชื่อ</label>
             <input type="text" id="a2" name="a2" size="20" maxlength="20">
-
+            <br>
             <label for="a3">เพศ</label>
             <input type="text" id="a3" name="a3" size="1" maxlength="1">
-
+            <br>
             <label for="a4">ที่อยู่</label>
             <input type="text" id="a4" name="a4" size="50" maxlength="80">
-
+            <br>
             <label for="a5">เบอร์โทร</label>
             <input type="text" id="a5" name="a5" size="10" maxlength="10">
-
+            <br>
             <input type="submit" value="ยืนยัน">
-            <input type="reset" value="ยกเลิก">
+            <a href="index.php"><input type="button" value="กลับ"></a>
         </form>
-        <a href="index.php"><input type="button" value="กลับ"></input></a>
     </div>
 </body>
+
 </html>

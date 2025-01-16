@@ -44,7 +44,7 @@ try {
         $updProd[] = "UPDATE Product SET StockQty = StockQty - " . (int) $item['qty'] . " WHERE IDProduct = " . (int) $item['id'] . " AND StockQty >= " . (int) $item['qty'];
     }
     // Calculate VAT and total price
-    $vat = $total * 0.07;
+    $vat = $total * 0.07 / 1.07;
     // Batch execution using a transaction
     mysqli_begin_transaction($conn);
 
@@ -115,9 +115,10 @@ try {
                 <style>
                     body { font-family: 'th_sarabun'; }
                     h1, h3 { text-align: center; }
-                    table { width: 100%; border-collapse: collapse; }
-                    th, td { border: 1px solid #000; padding: 8px; text-align: center; }
-                    .header, .footer { text-align: center; margin: 20px 0; }
+                    table { width: 100%; border-collapse: collapse; border: 1px solid #000; }
+                    th { border: 1px solid #000; padding: 8px; text-align: center; }
+                    td { border-left: 1px solid #000; border-right: 1px solid #000; padding: 8px; text-align: center; }
+                    .header, .footer { text-align: right; margin: 20px 0; }
                     .totals { text-align: right; margin-top: 10px; }
                 </style>
                 <div class='header'>
@@ -125,7 +126,6 @@ try {
                     <p>เลขที่ใบสั่งซื้อ: PO-{$transaction_data['IDtransaction']}</p>
                     <p>วันที่: {$transaction_data['Timestamp']}</p>
                 </div>
-                <br>
                 <div>
                     <strong>ลูกค้า:</strong> {$customer_data['Custname']} <br>
                     <strong>ที่อยู่:</strong> {$customer_data['Address']} <br>
@@ -154,17 +154,18 @@ try {
                         <td>" . number_format($detail_data['Sum'], 2) . "</td>
                     </tr>";
             }
-            $subtotal = $transaction_data["Totalprice"];
             $vat = $transaction_data['Vat'];
-            $total = $subtotal + $vat;
+            $total = $transaction_data["Totalprice"];
+            $subtotal = $total - $vat;
 
             $html .= "
                     </tbody>
                 </table>
                 <div class='totals'>
-                    <p><strong>รวมเป็นเงิน (Subtotal):</strong> " . number_format($subtotal, 2) . " บาท</p>
-                    <p><strong>ภาษีมูลค่าเพิ่ม (VAT 7%):</strong> " . number_format($vat, 2) . " บาท</p>
-                    <p><strong>จำนวนเงินรวมทั้งหมด (Total):</strong> " . number_format($total, 2) . " บาท</p>
+                    <p><strong>รวมเป็นเงิน :</strong> " . number_format($total, 2) . " บาท</p><br>
+                    <p><strong>ภาษีมูลค่าเพิ่ม (VAT 7%) :</strong> " . number_format($vat, 2) . " บาท</p>
+                    <p><strong>ราคาไม่รวมภาษีมูลค่าเพิ่ม :</strong> " . number_format($subtotal, 2) . " บาท</p>
+                    <p><strong>จำนวนเงินรวมทั้งหมด :</strong> " . number_format($total, 2) . " บาท</p>
                 </div>";
 
             $mpdf->WriteHTML($html);
