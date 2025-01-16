@@ -40,6 +40,9 @@ CREATE TABLE TransactionDetail (
     FOREIGN KEY (IDProduct) REFERENCES Product(IDProduct)
 );
 
+DELETE FROM Customer;
+DELETE FROM Product;
+
 INSERT INTO Customer (IDCust, Custname, Sex, Address, Tel) VALUES
 (1, 'John Doe', 'M', '123 Maple St, Springfield', '555-1234'),
 (2, 'Jane Smith', 'F', '456 Oak St, Metropolis', '555-5678'),
@@ -53,7 +56,22 @@ INSERT INTO Product (IDProduct, ProductName, PricePerUnit, StockQty) VALUES
 (102, 'Smartphone', 699.99, 200),
 (103, 'Tablet', 299.99, 150),
 (104, 'Headphones', 49.99, 300),
-(105, 'Smartwatch', 199.99, 120);
+(105, 'Smartwatch', 199.99, 120),
+(106, 'Wireless Charger', 39.99, 250),
+(107, 'Gaming Mouse', 59.99, 180),
+(108, 'Mechanical Keyboard', 89.99, 120),
+(109, 'External SSD 1TB', 129.99, 100),
+(110, '4K Monitor', 349.99, 80),
+(111, 'Portable Speaker', 79.99, 220),
+(112, 'Fitness Tracker', 99.99, 140),
+(113, 'Drone', 499.99, 50),
+(114, 'VR Headset', 299.99, 60),
+(115, 'Action Camera', 199.99, 90),
+(116, 'Electric Scooter', 599.99, 30),
+(117, 'E-Reader', 129.99, 110),
+(118, 'Webcam 1080p', 49.99, 250),
+(119, 'Noise-Canceling Earbuds', 149.99, 200),
+(120, 'Smart Home Hub', 89.99, 100);
 
 SELECT * FROM Product;
 SELECT * FROM Transaction td ;
