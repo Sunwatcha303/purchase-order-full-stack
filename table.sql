@@ -72,27 +72,27 @@ INSERT INTO Customer (Custname, Sex, Address, Tel) VALUES
 ('Bob Brown', 'M', '101 Elm St, Smallville', '555-1122'),
 ('Mary Davis', 'F', '202 Birch St, Star City', '555-3344');
 
-INSERT INTO Product (ProductName, PricePerUnit, StockQty) VALUES
-('Laptop', 999.99, 50),
-('Smartphone', 699.99, 200),
-('Tablet', 299.99, 150),
-('Headphones', 49.99, 300),
-('Smartwatch', 199.99, 120),
-('Wireless Charger', 39.99, 250),
-('Gaming Mouse', 59.99, 180),
-('Mechanical Keyboard', 89.99, 120),
-('External SSD 1TB', 129.99, 100),
-('4K Monitor', 349.99, 80),
-('Portable Speaker', 79.99, 220),
-('Fitness Tracker', 99.99, 140),
-('Drone', 499.99, 50),
-('VR Headset', 299.99, 60),
-('Action Camera', 199.99, 90),
-('Electric Scooter', 599.99, 30),
-('E-Reader', 129.99, 110),
-('Webcam 1080p', 49.99, 250),
-('Noise-Canceling Earbuds', 149.99, 200),
-('Smart Home Hub', 89.99, 100);
+INSERT INTO Product (ProductName, PricePerUnit, StockQty, ReserveQty) VALUES
+('Laptop', 999.99, 50, 50),
+('Smartphone', 699.99, 200, 200 ),
+('Tablet', 299.99, 150, 150),
+('Headphones', 49.99, 300, 300),
+('Smartwatch', 199.99, 120, 120),
+('Wireless Charger', 39.99, 250, 250),
+('Gaming Mouse', 59.99, 180, 180),
+('Mechanical Keyboard', 89.99, 120, 120),
+('External SSD 1TB', 129.99, 100, 100),
+('4K Monitor', 349.99, 80, 80),
+('Portable Speaker', 79.99, 220, 220),
+('Fitness Tracker', 99.99, 140, 140),
+('Drone', 499.99, 50, 50),
+('VR Headset', 299.99, 60, 60),
+('Action Camera', 199.99, 90, 90),
+('Electric Scooter', 599.99, 30, 30),
+('E-Reader', 129.99, 110, 110),
+('Webcam 1080p', 49.99, 250, 250),
+('Noise-Canceling Earbuds', 149.99, 200, 200),
+('Smart Home Hub', 89.99, 100, 100);
 
 -- Show all data from Product, Transaction, and TransactionDetail
 SELECT * FROM Product;
