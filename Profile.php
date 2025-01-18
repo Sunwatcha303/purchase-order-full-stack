@@ -116,7 +116,7 @@ echo "
             </tr>
         </thead>
         <tbody>";
-        
+
 $prepTrans = "SELECT IDtransaction, Timestamp FROM Transaction WHERE IDCust='$id'";
 $msresult = mysqli_query($conn, $prepTrans);
 

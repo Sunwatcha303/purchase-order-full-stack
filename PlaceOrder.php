@@ -82,14 +82,16 @@ try {
             $fontData = $defaultFontConfig['fontdata'];
             $mpdf = new \Mpdf\Mpdf([
                 'fontDir' => array_merge($fontDirs, [
-                    __DIR__ . '/font',
+                    __DIR__ . '/font', // โฟลเดอร์ที่เก็บฟอนต์
                 ]),
                 'fontdata' => $fontData + [
                     'th_sarabun' => [
-                        'R' => 'Sarabun-Regular.ttf',
-                    ]
+                        'R' => 'Sarabun-Regular.ttf', // ฟอนต์สำหรับแสดงภาษาไทย
+                    ],
                 ],
                 'default_font' => 'th_sarabun',
+                'encoding' => 'UTF-8', // ตั้งค่ารหัสเป็น UTF-8
+                'lang' => 'th', // ภาษาไทย
             ]);
 
             // Query transaction and customer details
@@ -162,9 +164,8 @@ try {
                     </tbody>
                 </table>
                 <div class='totals'>
-                    <p><strong>รวมเป็นเงิน :</strong> " . number_format($total, 2) . " บาท</p><br>
+                    <p><strong>ราคาก่อนรวมภาษีมูลค่าเพิ่ม :</strong> " . number_format($subtotal, 2) . " บาท</p>
                     <p><strong>ภาษีมูลค่าเพิ่ม (VAT 7%) :</strong> " . number_format($vat, 2) . " บาท</p>
-                    <p><strong>ราคาไม่รวมภาษีมูลค่าเพิ่ม :</strong> " . number_format($subtotal, 2) . " บาท</p>
                     <p><strong>จำนวนเงินรวมทั้งหมด :</strong> " . number_format($total, 2) . " บาท</p>
                 </div>";
 

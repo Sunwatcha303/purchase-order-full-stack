@@ -1,10 +1,10 @@
-DROP TABLE TransactionDetail;
-DROP TABLE Transaction;
-DROP TABLE Customer;
-DROP TABLE Stock;
+DROP TABLE IF EXISTS TransactionDetail;
+DROP TABLE IF EXISTS Transaction;
+DROP TABLE IF EXISTS Customer;
+DROP TABLE IF EXISTS Product;
 
 CREATE TABLE Customer (
-    IDCust INT NOT NULL,
+    IDCust INT NOT NULL AUTO_INCREMENT,
     Custname VARCHAR(50) NULL DEFAULT NULL,
     Sex CHAR(1) NULL DEFAULT NULL,
     Address VARCHAR(100) NULL DEFAULT NULL,
@@ -13,7 +13,7 @@ CREATE TABLE Customer (
 );
 
 CREATE TABLE Product (
-    IDProduct INT NOT NULL,
+    IDProduct INT NOT NULL AUTO_INCREMENT,
     ProductName VARCHAR(50) NULL DEFAULT NULL,
     PricePerUnit DECIMAL(10,2) NULL DEFAULT NULL,
     StockQty INT NULL DEFAULT NULL,
@@ -21,7 +21,7 @@ CREATE TABLE Product (
 );
 
 CREATE TABLE Transaction (
-    IDtransaction INT NOT NULL,
+    IDtransaction INT NOT NULL AUTO_INCREMENT,
     IDCust INT NOT NULL,
     Qty INT,
     Totalprice DECIMAL(10, 2),
@@ -40,39 +40,41 @@ CREATE TABLE TransactionDetail (
     FOREIGN KEY (IDProduct) REFERENCES Product(IDProduct)
 );
 
+-- Delete data if any exists
 DELETE FROM Customer;
 DELETE FROM Product;
 
-INSERT INTO Customer (IDCust, Custname, Sex, Address, Tel) VALUES
-(1, 'John Doe', 'M', '123 Maple St, Springfield', '555-1234'),
-(2, 'Jane Smith', 'F', '456 Oak St, Metropolis', '555-5678'),
-(3, 'Alice Johnson', 'F', '789 Pine St, Gotham', '555-9101'),
-(4, 'Bob Brown', 'M', '101 Elm St, Smallville', '555-1122'),
-(5, 'Mary Davis', 'F', '202 Birch St, Star City', '555-3344');
+-- Insert sample data (without specifying the auto-incremented columns)
+INSERT INTO Customer (Custname, Sex, Address, Tel) VALUES
+('John Doe', 'M', '123 Maple St, Springfield', '555-1234'),
+('Jane Smith', 'F', '456 Oak St, Metropolis', '555-5678'),
+('Alice Johnson', 'F', '789 Pine St, Gotham', '555-9101'),
+('Bob Brown', 'M', '101 Elm St, Smallville', '555-1122'),
+('Mary Davis', 'F', '202 Birch St, Star City', '555-3344');
 
+INSERT INTO Product (ProductName, PricePerUnit, StockQty) VALUES
+('Laptop', 999.99, 50),
+('Smartphone', 699.99, 200),
+('Tablet', 299.99, 150),
+('Headphones', 49.99, 300),
+('Smartwatch', 199.99, 120),
+('Wireless Charger', 39.99, 250),
+('Gaming Mouse', 59.99, 180),
+('Mechanical Keyboard', 89.99, 120),
+('External SSD 1TB', 129.99, 100),
+('4K Monitor', 349.99, 80),
+('Portable Speaker', 79.99, 220),
+('Fitness Tracker', 99.99, 140),
+('Drone', 499.99, 50),
+('VR Headset', 299.99, 60),
+('Action Camera', 199.99, 90),
+('Electric Scooter', 599.99, 30),
+('E-Reader', 129.99, 110),
+('Webcam 1080p', 49.99, 250),
+('Noise-Canceling Earbuds', 149.99, 200),
+('Smart Home Hub', 89.99, 100);
 
-INSERT INTO Product (IDProduct, ProductName, PricePerUnit, StockQty) VALUES
-(101, 'Laptop', 999.99, 50),
-(102, 'Smartphone', 699.99, 200),
-(103, 'Tablet', 299.99, 150),
-(104, 'Headphones', 49.99, 300),
-(105, 'Smartwatch', 199.99, 120),
-(106, 'Wireless Charger', 39.99, 250),
-(107, 'Gaming Mouse', 59.99, 180),
-(108, 'Mechanical Keyboard', 89.99, 120),
-(109, 'External SSD 1TB', 129.99, 100),
-(110, '4K Monitor', 349.99, 80),
-(111, 'Portable Speaker', 79.99, 220),
-(112, 'Fitness Tracker', 99.99, 140),
-(113, 'Drone', 499.99, 50),
-(114, 'VR Headset', 299.99, 60),
-(115, 'Action Camera', 199.99, 90),
-(116, 'Electric Scooter', 599.99, 30),
-(117, 'E-Reader', 129.99, 110),
-(118, 'Webcam 1080p', 49.99, 250),
-(119, 'Noise-Canceling Earbuds', 149.99, 200),
-(120, 'Smart Home Hub', 89.99, 100);
-
+-- Show all data from Product, Transaction, and TransactionDetail
 SELECT * FROM Product;
-SELECT * FROM Transaction td ;
-SELECT * FROM TransactionDetail td ORDER BY 1;
+SELECT * FROM Transaction;
+SELECT * FROM TransactionDetail ORDER BY 1;

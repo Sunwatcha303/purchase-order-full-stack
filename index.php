@@ -10,67 +10,91 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7fa;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #4e73df;
+            font-size: 28px;
+            margin-bottom: 30px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            background-color: #f9f9f9;
+            box-sizing: border-box;
+        }
+
+        input[type="text"]:focus {
+            border-color: #4e73df;
+            outline: none;
+            background-color: #f1f1f1;
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #4e73df;
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #2e59d9;
+        }
+
+        .register-link {
+            display: block;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #4e73df;
+            text-decoration: none;
+        }
+
+        .register-link:hover {
+            color: #2e59d9;
+        }
+
+    </style>
 </head>
 
 <body>
-    <center>
+    <div class="container">
         <form action="authen.php" method="POST">
-            <h1>รหัสลูกค้า
-                <input type="text" name="id"><br>
-                <input type="submit" value="ยืนยัน">
-                <input type="reset" value="ยกเลิก">
-            </h1>
+            <h1>กรุณากรอกรหัสลูกค้า</h1>
+            <input type="text" name="id" placeholder="รหัสลูกค้า" required><br>
+            <input type="submit" value="ยืนยัน">
+            <a href="Insert_Form.html" class="register-link">สมัครสมาชิก</a>
         </form>
-        <a href="Insert_Form.html"><input type="button" value="เพิ่มลูกค้า"></input></a>
-        <div>
-            <?php
-            $host = 'localhost';
-            $username = 'root';
-            $password = '';
-            $database = 'demo';
-            $port = 3307;
-
-            $conn = mysqli_connect($host, $username, $password, $database, $port);
-
-            $msquery = "SELECT * FROM Customer";
-            $msresult = mysqli_query($conn, $msquery);
-
-            $cntM = 0;
-            $cntF = 0;
-            // echo "<ol>";
-            echo "<center>";
-            echo "<table border='1' style='border-collapse: collapse'>
-                    <thead>
-                        <tr>
-                            <th>IDCust</th>
-                            <th>Custname</th>
-                            <th>Sex</th>
-                        </tr>
-                    </thead>
-                    ";
-            echo "<tbody>";
-            while ($row = mysqli_fetch_row($msresult)) {
-                echo "<tr>" .
-                    "<td>$row[0]</td>" .
-                    "<td>$row[1]</td>" .
-                    "<td>$row[2]</td>" .
-                    "</tr>\n";
-                if ($row[2] == "M") {
-                    $cntM++;
-                } else if ($row[2] == "F") {
-                    $cntF++;
-                }
-            }
-            echo "</tbody></table>";
-            echo "รวม " . $cntM + $cntF . " คน<br>";
-            echo "ชาย " . $cntM . " คน<br>";
-            echo "หญิง " . $cntF . " คน<br>";
-            
-            echo "</center>";
-            mysqli_close($conn);
-            ?>
-        </div>
-    </center>
+    </div>
 </body>
 
 </html>
