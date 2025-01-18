@@ -1,12 +1,24 @@
 <?php
 session_start();
+$host = 'localhost';
+$username = 'root';
+$password = '';
+$database = 'demo';
+$port = 3307;
 
+$conn = mysqli_connect($host, $username, $password, $database, $port);
 // การจัดการคำสั่งจากฟอร์ม (เพิ่ม, ลด, ลบสินค้า)
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
     $product_id = $_POST["product_id"];
 
     if ($_POST["action"] == "add") {
-        $_SESSION["cart"][$product_id]["qty"]++;
+        $sql = "SELECT StockQty FROM Product WHERE IDProduct = $product_id";
+        $msresult = mysqli_query($conn, $sql);
+        $row = mysqli_fetch_row($msresult);
+
+        if ($row[0] > $_SESSION["cart"][$product_id]["qty"]) {
+            $_SESSION["cart"][$product_id]["qty"]++;
+        }
     } elseif ($_POST["action"] == "remove") {
         if ($_SESSION["cart"][$product_id]["qty"] > 1) {
             $_SESSION["cart"][$product_id]["qty"]--;
@@ -17,7 +29,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
         unset($_SESSION["cart"][$product_id]); // ลบสินค้าทั้งรายการ
     }
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -128,10 +139,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
         <div class="cart">
             <?php
             $totalPrice = 0; // สำหรับเก็บราคารวมทั้งหมด
-
+            
             if (!empty($_SESSION["cart"])) {
                 echo "<div class='cart-item' style='font-weight: bold;'>
                         <span class='name'>สินค้า</span>
+                        <span>คลัง</span>
                         <span>ราคาต่อชิ้น</span>
                         <span>จำนวน</span>
                         <span>ราคารวม</span>
@@ -141,9 +153,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
                 foreach ($_SESSION["cart"] as $product_id => $item) {
                     $itemTotal = $item["price"] * $item["qty"]; // คำนวณราคารวมต่อสินค้า
                     $totalPrice += $itemTotal; // เพิ่มเข้าในราคารวมทั้งหมด
-
+            
                     echo "<div class='cart-item'>";
                     echo "<span class='name'>" . htmlspecialchars($item["name"]) . "</span>";
+                    echo "<span class='qty'>" . $item['stock_qty'] . "</span>";
                     echo "<span>$" . number_format($item["price"], 2) . "</span>";
 
                     // จำนวนสินค้า พร้อมปุ่ม + และ -
@@ -173,10 +186,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
                     echo "</div>";
                 }
                 // คำนวณราคาก่อนรวมภาษี (ราคาหลังหักภาษี)
-                $priceBeforeTax = number_format($totalPrice / 1.07, 2); 
+                $priceBeforeTax = number_format($totalPrice / 1.07, 2);
 
                 // คำนวณ VAT 7%
-                $vatAmount = number_format($totalPrice * 0.07 / 1.07, 2); 
+                $vatAmount = number_format($totalPrice * 0.07 / 1.07, 2);
 
                 // แสดงผล
                 echo "<div class='summary'><strong>ราคาก่อนรวมภาษี:</strong> $" . $priceBeforeTax . "</div><br>";

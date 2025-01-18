@@ -131,6 +131,7 @@
         $product_id = $_POST["product_id"];
         $product_name = $_POST["product_name"];
         $product_price = $_POST["product_price"];
+        $product_stock_qty = $_POST["product_stock_qty"];
 
         if (isset($_SESSION["cart"][$product_id])) {
             $_SESSION["cart"][$product_id]["qty"] += 1;
@@ -139,6 +140,7 @@
                 "id" => $product_id,
                 "name" => $product_name,
                 "price" => $product_price,
+                "stock_qty" => $product_stock_qty,
                 "qty" => 1
             ];
         }
@@ -173,6 +175,7 @@
                     <input type=hidden name=product_id value=$row[0]>
                     <input type=hidden name=product_name value=$row[1]>
                     <input type=hidden name=product_price value=$row[2]>
+                    <input type=hidden name=product_stock_qty value=$row[3]>
                     <button type=submit>Add to Cart</button>
                 </form>
             </div>
