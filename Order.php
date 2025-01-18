@@ -134,7 +134,9 @@
         $product_stock_qty = $_POST["product_stock_qty"];
 
         if (isset($_SESSION["cart"][$product_id])) {
-            $_SESSION["cart"][$product_id]["qty"] += 1;
+            if ($_SESSION["cart"][$product_id]["qty"] < $product_stock_qty) {
+                $_SESSION["cart"][$product_id]["qty"] += 1;
+            }
         } else {
             $_SESSION["cart"][$product_id] = [
                 "id" => $product_id,
