@@ -2,6 +2,8 @@ DROP TABLE IF EXISTS TransactionDetail;
 DROP TABLE IF EXISTS Transaction;
 DROP TABLE IF EXISTS Customer;
 DROP TABLE IF EXISTS Product;
+DROP TABLE IF EXISTS StatusDetail;
+DROP TABLE IF EXISTS Status;
 
 CREATE TABLE Customer (
     IDCust INT NOT NULL AUTO_INCREMENT,
@@ -17,7 +19,14 @@ CREATE TABLE Product (
     ProductName VARCHAR(50) NULL DEFAULT NULL,
     PricePerUnit DECIMAL(10,2) NULL DEFAULT NULL,
     StockQty INT NULL DEFAULT NULL,
+    ReserveQty INT NULL DEFAULT NULL,
     PRIMARY KEY (IDProduct)
+);
+
+CREATE TABLE Status(
+	IDStatus INT NOT NULL AUTO_INCREMENT,
+	StatusName VARCHAR(50) NOT NULL,
+	PRIMARY KEY (IDStatus)
 );
 
 CREATE TABLE Transaction (
@@ -27,8 +36,10 @@ CREATE TABLE Transaction (
     Totalprice DECIMAL(10, 2),
     Vat DECIMAL(10, 2),
     Timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    IDStatus INT, 
     PRIMARY KEY (IDtransaction),
-    FOREIGN KEY (IDCust) REFERENCES Customer(IDCust)
+    FOREIGN KEY (IDCust) REFERENCES Customer(IDCust),
+    FOREIGN KEY (IDStatus) REFERENCES Status(IDStatus)
 );
 
 CREATE TABLE TransactionDetail (
@@ -40,6 +51,15 @@ CREATE TABLE TransactionDetail (
     FOREIGN KEY (IDProduct) REFERENCES Product(IDProduct)
 );
 
+CREATE TABLE StatusDetail(
+	seq INT NOT NULL AUTO_INCREMENT,
+	IDtransaction INT NOT NULL,
+	IDStatus INT NOT NULL ,
+	Timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY (seq, IDtransaction),
+	FOREIGN KEY (IDtransaction) REFERENCES Transaction(IDtransaction),
+	FOREIGN KEY (IDStatus) REFERENCES Status(IDStatus)
+);
 -- Delete data if any exists
 DELETE FROM Customer;
 DELETE FROM Product;
