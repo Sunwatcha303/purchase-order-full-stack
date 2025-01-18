@@ -94,6 +94,15 @@ INSERT INTO Product (ProductName, PricePerUnit, StockQty, ReserveQty) VALUES
 ('Noise-Canceling Earbuds', 149.99, 200, 200),
 ('Smart Home Hub', 89.99, 100, 100);
 
+INSERT INTO Status (StatusName) VALUES 
+('Pending'),
+('Approved'),
+('Rejected'),
+('Packing'),
+('Shipping'),
+('Completed'),
+('Cancelled');
+
 -- Show all data from Product, Transaction, and TransactionDetail
 SELECT * FROM Product;
 SELECT * FROM Transaction;

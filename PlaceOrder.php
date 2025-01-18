@@ -36,11 +36,6 @@ try {
         $values[] = "($nextid, " . (int) $item['id'] . ", " . (int) $item['qty'] . ")";
         $total += $item["price"] * $item["qty"];
         $qty += $item["qty"];
-        $result = mysqli_query($conn, "SELECT StockQty FROM Product WHERE IDProduct = " . (int) $item['id']);
-        $row = mysqli_fetch_row($result);
-        if ($row[0] == 0 || $row[0] < $item['qty']) {
-            throw new Exception("สต๊อกสินค้าไม่เพียงพอ");
-        }
         $updProd[] = "UPDATE Product SET StockQty = StockQty - " . (int) $item['qty'] . " WHERE IDProduct = " . (int) $item['id'] . " AND StockQty >= " . (int) $item['qty'];
     }
     // Calculate VAT and total price
