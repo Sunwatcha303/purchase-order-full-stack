@@ -12,7 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
     $product_id = $_POST["product_id"];
 
     if ($_POST["action"] == "add") {
-        $sql = "SELECT StockQty FROM Product WHERE IDProduct = $product_id";
+        $sql = "SELECT ReserveQty FROM Product WHERE IDProduct = $product_id";
         $msresult = mysqli_query($conn, $sql);
         $row = mysqli_fetch_row($msresult);
 
@@ -159,7 +159,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
             
                     echo "<div class='cart-item'>";
                     echo "<span class='name'>" . htmlspecialchars($item["name"]) . "</span>";
-                    echo "<span class='qty'>" . $item['stock_qty'] . "</span>";
+                    echo "<span class='qty'>" . $item['reserve_qty'] . "</span>";
                     echo "<span>$" . number_format($item["price"], 2) . "</span>";
 
                     // จำนวนสินค้า พร้อมปุ่ม + และ -

@@ -112,19 +112,19 @@ echo "
             <tr>
                 <th>Transaction ID</th>
                 <th>Timestamp</th>
-                <th>Receipt</th>
+                <th>Status</th>
             </tr>
         </thead>
         <tbody>";
 
-$prepTrans = "SELECT IDtransaction, Timestamp FROM Transaction WHERE IDCust='$id'";
+$prepTrans = "SELECT t.IDtransaction, t.Timestamp, s.StatusName FROM Transaction t INNER JOIN Status s ON t.IDStatus = s.IDStatus WHERE IDCust='$id'";
 $msresult = mysqli_query($conn, $prepTrans);
 
 while ($row = mysqli_fetch_row($msresult)) {
     echo "<tr>
             <td>" . htmlspecialchars($row[0]) . "</td>
             <td>" . htmlspecialchars($row[1]) . "</td>
-            <td><a href='reciepts/" . htmlspecialchars($row[0]) . ".pdf'>View Receipt</a></td>
+            <td>" . $row[2] . "</td>
           </tr>";
 }
 echo "
