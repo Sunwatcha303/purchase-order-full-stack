@@ -5,6 +5,47 @@ DROP TABLE IF EXISTS Product;
 DROP TABLE IF EXISTS StatusDetail;
 DROP TABLE IF EXISTS Status;
 
+DELIMITER $$
+
+CREATE TRIGGER trg_log_status_change
+AFTER UPDATE ON `Transaction`
+FOR EACH ROW
+BEGIN
+    -- ตรวจสอบว่าค่า IDStatus มีการเปลี่ยนแปลง
+    IF NEW.IDStatus <> OLD.IDStatus THEN
+        -- เก็บ log ลงใน StatusDetail
+        INSERT INTO StatusDetail (IDtransaction, IDStatus, Timestamp)
+        VALUES (NEW.IDtransaction, NEW.IDStatus, CURRENT_TIMESTAMP);
+    END IF;
+END$$
+
+DELIMITER ;
+
+DELIMITER $$
+
+CREATE TRIGGER trg_log_status_insert
+AFTER INSERT ON `Transaction`
+FOR EACH ROW
+BEGIN
+    -- บันทึก log ลงใน StatusDetail เมื่อมีการ INSERT
+    INSERT INTO StatusDetail (IDtransaction, IDStatus, Timestamp)
+    VALUES (NEW.IDtransaction, NEW.IDStatus, CURRENT_TIMESTAMP);
+END$$
+
+DELIMITER ;
+
+
+INSERT INTO Transaction (IDCust, Qty, Totalprice, Vat, IDStatus)
+VALUES (1, 2, 1999.98, 139.99, 1);
+
+UPDATE Transaction
+SET IDStatus = 2
+WHERE IDtransaction = 4;
+
+
+
+
+
 CREATE TABLE Customer (
     IDCust INT NOT NULL AUTO_INCREMENT,
     Custname VARCHAR(50) NULL DEFAULT NULL,
@@ -72,6 +113,15 @@ INSERT INTO Customer (Custname, Sex, Address, Tel) VALUES
 ('Bob Brown', 'M', '101 Elm St, Smallville', '555-1122'),
 ('Mary Davis', 'F', '202 Birch St, Star City', '555-3344');
 
+INSERT INTO Status (StatusName) VALUES 
+('Pending'),
+('Approved'),
+('Rejected'),
+('Packing'),
+('Shipping'),
+('Completed'),
+('Cancelled');
+
 INSERT INTO Product (ProductName, PricePerUnit, StockQty, ReserveQty) VALUES
 ('Laptop', 999.99, 50, 50),
 ('Smartphone', 699.99, 200, 200 ),
@@ -93,15 +143,6 @@ INSERT INTO Product (ProductName, PricePerUnit, StockQty, ReserveQty) VALUES
 ('Webcam 1080p', 49.99, 250, 250),
 ('Noise-Canceling Earbuds', 149.99, 200, 200),
 ('Smart Home Hub', 89.99, 100, 100);
-
-INSERT INTO Status (StatusName) VALUES 
-('Pending'),
-('Approved'),
-('Rejected'),
-('Packing'),
-('Shipping'),
-('Completed'),
-('Cancelled');
 
 -- Show all data from Product, Transaction, and TransactionDetail
 SELECT * FROM Product;
