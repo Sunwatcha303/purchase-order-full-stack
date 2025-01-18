@@ -130,6 +130,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
         .button.order:hover {
             background-color: #218838;
         }
+        .qty{
+            color: rgba(0, 0, 0, 0.2);
+        }
     </style>
 </head>
 
@@ -163,12 +166,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
                     echo "<span>";
                     echo "<form method='post' style='display: inline;'>
                             <input type='hidden' name='product_id' value='$product_id'>
-                            <button type='submit' name='action' value='remove'>➖</button>
+                            <button type='submit' name='action' value='remove' style='background: none; border: none; cursor: pointer;'>➖</button>
                           </form>";
                     echo htmlspecialchars($item["qty"]);
                     echo "<form method='post' style='display: inline;'>
                             <input type='hidden' name='product_id' value='$product_id'>
-                            <button type='submit' name='action' value='add'>➕</button>
+                            <button type='submit' name='action' value='add' style='background: none; border: none; cursor: pointer;'>➕</button>
                           </form>";
                     echo "</span>";
 
