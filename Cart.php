@@ -84,7 +84,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
         .summary {
             text-align: right;
             font-size: 18px;
-            margin-top: 20px;
+            /* margin-top: 20px; */
             color: #333;
         }
 
@@ -172,8 +172,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
                           </span>";
                     echo "</div>";
                 }
+                // คำนวณราคาก่อนรวมภาษี (ราคาหลังหักภาษี)
+                $priceBeforeTax = number_format($totalPrice / 1.07, 2); 
 
+                // คำนวณ VAT 7%
+                $vatAmount = number_format($totalPrice * 0.07 / 1.07, 2); 
+
+                // แสดงผล
+                echo "<div class='summary'><strong>ราคาก่อนรวมภาษี:</strong> $" . $priceBeforeTax . "</div><br>";
+                echo "<div class='summary'><strong>vat 7%:</strong> $" . $vatAmount . "</div><br>";
                 echo "<div class='summary'><strong>ราคารวมทั้งหมด:</strong> $" . number_format($totalPrice, 2) . "</div>";
+
             } else {
                 echo "<p style='text-align: center;'>Your cart is empty.</p>";
             }
