@@ -175,11 +175,13 @@
                     <input type=hidden name=product_id value=$row[0]>
                     <input type=hidden name=product_name value=$row[1]>
                     <input type=hidden name=product_price value=$row[2]>
-                    <input type=hidden name=product_stock_qty value=$row[3]>
-                    <button type=submit>Add to Cart</button>
+                    <input type=hidden name=product_stock_qty value=$row[3]>";
+                    if($row[3] > 0){
+                        echo "<button type=submit>Add to Cart</button>";
+                    }
+            echo " 
                 </form>
-            </div>
-        ";
+            </div>";
         }
         ?>
     </div>
