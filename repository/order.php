@@ -19,43 +19,67 @@ class Order_Repo
 
         return $msresult;
     }
-    static function UpdateStatusOrder($idStatus, $idTransaction)
+    static function UpdateStatusOrder($link, $idStatus, $idTransaction)
+    {
+        $sqlUpdate = "UPDATE `Transaction` SET IDStatus = '$idStatus' WHERE IDtransaction = '$idTransaction'";
+        mysqli_query($link, $sqlUpdate);
+    }
+
+    static public function CancelOrder($idStatus, $idTransaction)
     {
         $link = Database::connect();
 
-        $sqlUpdate = "UPDATE `Transaction` SET IDStatus = '$idStatus' WHERE IDtransaction = '$idTransaction'";
-        mysqli_query($link, $sqlUpdate);
+        $sql = "SELECT IDProduct, Qty FROM TransactionDetail WHERE IDtransaction = $idTransaction";
+        $result = mysqli_query($link, $sql);
 
-        Database::close();
+        $updReserveQty = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+            $updReserveQty[] = "UPDATE Product SET ReserveQty = ReserveQty + " . (int) $row['Qty'] . " WHERE IDProduct = " . (int) $row['IDProduct'];
+        }
+
+        mysqli_begin_transaction($link);
+
+        try {
+            foreach ($updReserveQty as $updateQuery) {
+                if (!mysqli_query($link, $updateQuery)) {
+                    throw new Exception("Error updating product quantities: " . mysqli_error($link));
+                }
+            }
+            Order_Repo::UpdateStatusOrder($link, $idStatus, $idTransaction);
+            mysqli_commit($link);
+        } catch (Exception $e) {
+            Database::rollback();
+        } finally {
+            Database::close();
+        }
     }
 
     static public function CompleteOrder($idStatus, $idTransaction)
     {
         $link = Database::connect();
 
-        // Begin the database transaction
+        $sql = "SELECT td.IDProduct, td.Qty FROM TransactionDetail td WHERE td.IDtransaction = $idTransaction";
+        $result = mysqli_query($link, $sql);
+
+        $updStockQty = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+            $updStockQty[] = "UPDATE Product SET StockQty = StockQty - " . (int) $row['Qty'] . " WHERE IDProduct = " . (int) $row['IDProduct'];
+        }
+
         mysqli_begin_transaction($link);
 
         try {
-            // Update the transaction status
-            $sqlUpdate = "UPDATE `Transaction` SET IDStatus = '$idStatus' WHERE IDtransaction = '$idTransaction'";
-            $result = mysqli_query($link, $sqlUpdate);
-
-            if (!$result) {
-                throw new Exception("Error updating transaction status");
+            foreach ($updStockQty as $updateQuery) {
+                if (!mysqli_query($link, $updateQuery)) {
+                    throw new Exception("Error updating product quantities: " . mysqli_error($link));
+                }
             }
-
-            // Create the PDF for the transaction
+            Order_Repo::UpdateStatusOrder($link, $idStatus, $idTransaction);
             Order_Repo::CreatePDF($link, $idTransaction);
-
-            // Commit the transaction if everything is successful
             mysqli_commit($link);
         } catch (Exception $e) {
-            // Rollback in case of any error
-            mysqli_rollback($link);
-            echo "Error: " . $e->getMessage();
+            Database::rollback();
         } finally {
-            // Close the database connection
             Database::close();
         }
     }
