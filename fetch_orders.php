@@ -12,13 +12,13 @@ switch ($status_id) {
         $status_name = "Approved";
         break;
     case 3:
-        $status_name = "Completed";
+        $status_name = "Shipping";
         break;
     case 4:
         $status_name = "Packing";
         break;
     case 5:
-        $status_name = "Shipping";
+        $status_name = "Completed";
         break;
     case 6:
         $status_name = "Rejected";

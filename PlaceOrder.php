@@ -1,8 +1,4 @@
 <?php
-require_once __DIR__ . '/vendor/autoload.php';
-
-use Mpdf\Mpdf;
-
 session_start();
 $idCust = $_SESSION['id'];
 $cart = $_SESSION['cart'];

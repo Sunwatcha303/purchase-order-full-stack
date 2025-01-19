@@ -116,10 +116,10 @@ INSERT INTO Customer (Custname, Sex, Address, Tel) VALUES
 INSERT INTO Status (StatusName) VALUES 
 ('Pending'),
 ('Approved'),
-('Rejected'),
 ('Packing'),
 ('Shipping'),
 ('Completed'),
+('Rejected'),
 ('Cancelled');
 
 INSERT INTO Product (ProductName, PricePerUnit, StockQty, ReserveQty) VALUES

@@ -13,14 +13,20 @@ $conn = mysqli_connect($host, $username, $password, $database, $port);
 $msquery = "SELECT * FROM Customer WHERE IDCust = '$id'";
 $msresult = mysqli_query($conn, $msquery);
 $row = mysqli_fetch_row($msresult);
+?>
 
-echo "
 <!DOCTYPE html>
 <html lang='en'>
+
 <head>
     <meta charset='UTF-8'>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <title>Customer Info</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- SweetAlert2 JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         body {
             font-family: Tahoma, sans-serif;
@@ -29,11 +35,13 @@ echo "
             padding: 20px;
             margin: 0;
         }
+
         .container-profile {
             max-width: 800px;
             margin: auto;
             padding: 20px;
         }
+
         .card-profile {
             background-color: #fff;
             border-radius: 8px;
@@ -41,28 +49,35 @@ echo "
             margin-bottom: 20px;
             padding: 20px;
         }
+
         .card-profile h2 {
             font-size: 1.5rem;
             margin-bottom: 10px;
             color: #555;
         }
+
         .card-profile table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 10px;
         }
-        .card-profile table th, .card-profile table td {
+
+        .card-profile table th,
+        .card-profile table td {
             text-align: left;
             padding: 8px;
             border-bottom: 1px solid #ddd;
         }
+
         .card-profile table th {
             background-color: #f4f4f4;
             font-weight: bold;
         }
+
         .button-container-profile {
             text-align: center;
         }
+
         .btn {
             background-color: #007BFF;
             color: #fff;
@@ -73,63 +88,75 @@ echo "
             text-transform: uppercase;
             font-size: 0.9rem;
         }
+
         .btn:hover {
             background-color: #0056b3;
         }
+
         .receipt-links {
             list-style: none;
             padding: 0;
             margin: 0;
         }
+
         .receipt-links li {
             margin-bottom: 10px;
         }
+
         .receipt-links a {
             color: #007BFF;
             text-decoration: none;
             font-size: 0.95rem;
         }
+
         .receipt-links a:hover {
             text-decoration: underline;
         }
     </style>
 </head>
+
 <body>
     <div class='container-profile'>
         <!-- Combined Customer Information and Receipts card-profile -->
         <div class='card-profile'>
             <h2>Customer Information & Receipts</h2>
             <table>
-                <tr><th>ID</th><td>" . htmlspecialchars($row[0]) . "</td></tr>
-                <tr><th>Name</th><td>" . htmlspecialchars($row[1]) . "</td></tr>
-                <tr><th>Sex</th><td>" . htmlspecialchars($row[2]) . "</td></tr>
-                <tr><th>Address</th><td>" . htmlspecialchars($row[3]) . "</td></tr>
-                <tr><th>Tel.</th><td>" . htmlspecialchars($row[4]) . "</td></tr>
+                <tr>
+                    <th>ID</th>
+                    <td><?php echo htmlspecialchars($row[0]) ?></td>
+                </tr>
+                <tr>
+                    <th>Name</th>
+                    <td><?php echo htmlspecialchars($row[1]) ?></td>
+                </tr>
+                <tr>
+                    <th>Sex</th>
+                    <td><?php echo htmlspecialchars($row[2]) ?></td>
+                </tr>
+                <tr>
+                    <th>Address</th>
+                    <td><?php echo htmlspecialchars($row[3]) ?></td>
+                </tr>
+                <tr>
+                    <th>Tel.</th>
+                    <td><?php echo htmlspecialchars($row[4]) ?></td>
+                </tr>
             </table>
             <h3 style='margin-top: 20px;'>Receipts</h3>
-<table class='receipt-table'>
-        <thead>
-            <tr>
-                <th>Transaction ID</th>
-                <th>Timestamp</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tbody>";
+            <table class='receipt-table'>
+                <thead>
+                    <tr>
+                        <th>Transaction ID</th>
+                        <th>Timestamp</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                        <th>Reciept</th>
+                    </tr>
+                </thead>
+                <tbody>
 
-$prepTrans = "SELECT t.IDtransaction, t.Timestamp, s.StatusName FROM Transaction t INNER JOIN Status s ON t.IDStatus = s.IDStatus WHERE IDCust='$id'";
-$msresult = mysqli_query($conn, $prepTrans);
-
-while ($row = mysqli_fetch_row($msresult)) {
-    echo "<tr>
-            <td>" . htmlspecialchars($row[0]) . "</td>
-            <td>" . htmlspecialchars($row[1]) . "</td>
-            <td>" . $row[2] . "</td>
-          </tr>";
-}
-echo "
-        </tbody>
-      </table>
+                </tbody>
+            </table>
         </div>
 
         <!-- Back Button -->
@@ -137,9 +164,68 @@ echo "
             <a href='Order.php'><button class='btn'>Back</button></a>
         </div>
     </div>
+
+    <script>
+        function handleCancelOrder(idTransaction) {
+            $.ajax({
+                url: './service/cancel_order.php',
+                method: 'POST',
+                data: { idTransaction: idTransaction },
+                success: function (response) {
+                    const result = JSON.parse(response);
+                    if (result.success) {
+                        Swal.fire('Success!', result.message, 'success');
+                        window.location.reload();
+                    } else {
+                        Swal.fire('Error!', result.message, 'error');
+                    }
+                },
+                error: function () {
+                    Swal.fire('Error!', 'Failed to cancel order.', 'error');
+                }
+            });
+        }
+
+        function handleCompleteOrder(idTransaction) {
+            $.ajax({
+                url: './service/complete_order.php',
+                method: 'POST',
+                data: { idTransaction: idTransaction },
+                success: function (response) {
+                    const result = JSON.parse(response);
+                    if (result.success) {
+                        Swal.fire('Success!', result.message, 'success');
+                        window.location.reload();
+                    } else {
+                        Swal.fire('Error!', result.message, 'error');
+                    }
+                },
+                error: function () {
+                    Swal.fire('Error!', 'Failed to cancel order.', 'error');
+                }
+            });
+        }
+
+        function fetchAllOrders(customerId) {
+            $.ajax({
+                url: './service/get_all_order_by_id.php',
+                method: 'POST',
+                data: { id: customerId },
+                success: function (response) {
+                    $('.receipt-table tbody').html(response);
+                },
+                error: function () {
+                    alert('Error fetching orders!');
+                }
+            });
+        }
+
+        fetchAllOrders(<?php echo $id ?>);
+    </script>
 </body>
+
 </html>
-";
+<?php
 
 mysqli_close($conn);
 ?>

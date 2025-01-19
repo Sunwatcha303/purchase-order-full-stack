@@ -116,7 +116,7 @@ $result_status = mysqli_query($link, $sql_status);
         }
 
         function confirmUpdate(idTransaction, statusName) {
-            filterOrders(1);
+            // filterOrders(1);
             Swal.fire({
                 title: 'Are you sure?',
                 icon: 'warning',
@@ -128,7 +128,7 @@ $result_status = mysqli_query($link, $sql_status);
             }).then((result) => {
                 if (result.isConfirmed) {
                     updateStatus(idTransaction, statusName);
-                } 
+                }
             });
         }
 
@@ -141,6 +141,7 @@ $result_status = mysqli_query($link, $sql_status);
                 success: function (response) {
                     Swal.fire('Success!', 'Status updated successfully.', 'success');
                     // Optional: Reload the page or refresh data
+                    window.location.reload();
                 },
                 error: function () {
                     Swal.fire('Error!', 'Failed to update status.', 'error');
