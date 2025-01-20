@@ -13,9 +13,10 @@ $result_status = mysqli_query($link, $sql_status);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Management</title>
-    <!-- รวม Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         body {
             display: flex;
@@ -91,9 +92,6 @@ $result_status = mysqli_query($link, $sql_status);
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
     <script>
         function filterOrders(statusId) {
             $('#statusList a').removeClass('active');
@@ -103,7 +101,7 @@ $result_status = mysqli_query($link, $sql_status);
             }).addClass('active');
 
             $.ajax({
-                url: 'fetch_orders.php',
+                url: './service/fetch_orders.php',
                 method: 'GET',
                 data: { status: statusId },
                 success: function (data) {
@@ -115,8 +113,7 @@ $result_status = mysqli_query($link, $sql_status);
             });
         }
 
-        function confirmUpdate(idTransaction, statusName) {
-            // filterOrders(1);
+        function confirmUpdate(idTransaction, statusId) {
             Swal.fire({
                 title: 'Are you sure?',
                 icon: 'warning',
@@ -127,7 +124,7 @@ $result_status = mysqli_query($link, $sql_status);
                 cancelButtonText: 'No'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    updateStatus(idTransaction, statusName);
+                    updateStatus(idTransaction, statusId);
                 }
             });
         }
@@ -135,13 +132,15 @@ $result_status = mysqli_query($link, $sql_status);
         function updateStatus(idTransaction, statusId) {
             const action = statusId; // Assign action from statusName
             $.ajax({
-                url: 'update_status.php',
+                url: './service/update_status.php',
                 method: 'POST',
                 data: { idTransaction, action },
                 success: function (response) {
-                    Swal.fire('Success!', 'Status updated successfully.', 'success');
-                    // Optional: Reload the page or refresh data
-                    window.location.reload();
+                    console.log(response)
+                    Swal.fire('Success!', 'Status updated successfully.', 'success').then(() => {
+                        filterOrders(statusId-1)
+                    });
+
                 },
                 error: function () {
                     Swal.fire('Error!', 'Failed to update status.', 'error');

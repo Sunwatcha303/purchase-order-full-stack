@@ -25,6 +25,9 @@ $row = mysqli_fetch_row($msresult);
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+
     <!-- SweetAlert2 JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
@@ -166,6 +169,21 @@ $row = mysqli_fetch_row($msresult);
     </div>
 
     <script>
+        function confirmCancel(idTransaction) {
+            Swal.fire({
+                title: 'Are you sure?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'No'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    handleCancelOrder(idTransaction);
+                }
+            });
+        }
         function handleCancelOrder(idTransaction) {
             $.ajax({
                 url: './service/cancel_order.php',
@@ -194,8 +212,11 @@ $row = mysqli_fetch_row($msresult);
                 success: function (response) {
                     const result = JSON.parse(response);
                     if (result.success) {
-                        Swal.fire('Success!', result.message, 'success');
+                        Swal.fire('Success!', 'Status updated successfully.', 'success').then(() => {
+                        // filterOrders(statusId-1)
                         window.location.reload();
+                    });
+
                     } else {
                         Swal.fire('Error!', result.message, 'error');
                     }

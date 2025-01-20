@@ -12,7 +12,7 @@ while ($row = mysqli_fetch_row($msresult)) {
         echo "<input class='btn-success btn-sm' type=button value=Complete onClick=handleCompleteOrder($row[0])></input>";
     }
     if ($row[2] !== "Completed" && $row[2] !== "Cancelled") {
-        echo "<input class='btn-danger btn-sm' type=button value=Cancel onClick=handleCancelOrder($row[0])></input>";
+        echo "<input class='btn-danger btn-sm' type=button value=Cancel onClick=confirmCancel($row[0])></input>";
     }
     else{
         echo "No action";
