@@ -8,7 +8,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if($idStatus == 2){
         Backoffice_Repo::CreatePDF($idTransaction);
     }
+    if($idStatus == 7){
+        Backoffice_Repo::CancelOrder($idTransaction);
+    }
 }
-
-mysqli_close($link);
 ?>

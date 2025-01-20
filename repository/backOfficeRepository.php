@@ -30,6 +30,34 @@ class Backoffice_Repo
         Database::close();
     }
 
+    static public function CancelOrder($idTransaction)
+    {
+        $link = Database::connect();
+
+        $sql = "SELECT IDProduct, Qty FROM TransactionDetail WHERE IDtransaction = $idTransaction";
+        $result = mysqli_query($link, $sql);
+
+        $updReserveQty = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+            $updReserveQty[] = "UPDATE Product SET ReserveQty = ReserveQty + " . (int) $row['Qty'] . " WHERE IDProduct = " . (int) $row['IDProduct'];
+        }
+
+        mysqli_begin_transaction($link);
+
+        try {
+            foreach ($updReserveQty as $updateQuery) {
+                if (!mysqli_query($link, $updateQuery)) {
+                    throw new Exception("Error updating product quantities: " . mysqli_error($link));
+                }
+            }
+            mysqli_commit($link);
+        } catch (Exception $e) {
+            Database::rollback();
+        } finally {
+            Database::close();
+        }
+    }
+
     static public function GetTransactionDetails($transaction_id)
     {
         $link = Database::connect();

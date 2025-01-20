@@ -11,10 +11,10 @@ switch ($status_id) {
         $status_name = "Approved &#x2705;"; // ✅
         break;
     case 3:
-        $status_name = "Shipping &#128666;"; // 🚚
+        $status_name = "Packing &#128230;"; // 📦
         break;
     case 4:
-        $status_name = "Packing &#128230;"; // 📦
+        $status_name = "Shipping &#128666;"; // 🚚
         break;
     case 5:
         $status_name = "Completed &#128230 &#x2705;"; // ✅
