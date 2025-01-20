@@ -158,15 +158,19 @@ $result_status = mysqli_query($link, $sql_status);
                 method: 'POST',
                 data: { idTransaction, action },
                 success: function (response) {
-                    console.log(response)
-                    Swal.fire('Success!', 'Status updated successfully.', 'success').then(() => {
-                        if (statusId != 7) {
-                            filterOrders(statusId - 1)
-                        } else {
-                            filterOrders(statusId)
-                        }
-                    });
+                    const result = JSON.parse(response);
+                    if (result.success) {
+                        Swal.fire('Success!', result.message, 'success').then(() => {
+                            if (statusId != 7) {
+                                filterOrders(statusId - 1)
+                            } else {
+                                filterOrders(statusId)
+                            }
+                        });
 
+                    } else {
+                        Swal.fire('Error!', result.message, 'error');
+                    }
                 },
                 error: function () {
                     Swal.fire('Error!', 'Failed to update status.', 'error');
