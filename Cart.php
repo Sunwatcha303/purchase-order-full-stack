@@ -206,7 +206,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
         </div>
 
         <div class="buttons">
-            <a href="Order.php">
+            <a href="Product.php">
                 <button class="button back">กลับ</button>
             </a>
             <form action="ConfirmOrder.php" method="post" style="display: inline;">

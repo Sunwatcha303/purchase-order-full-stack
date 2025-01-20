@@ -154,7 +154,7 @@ unset($_SESSION['cart']);
         <h2><?php echo $msg ?></h2>
         <p>กลับไปยังหน้าหลัก</p>
         <div class="buttons">
-            <a href="Order.php">
+            <a href="Product.php">
                 <?php
                 if ($success) {
                     echo '<button class="button confirm">ตกลง</button>';

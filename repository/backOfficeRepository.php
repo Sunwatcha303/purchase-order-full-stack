@@ -30,6 +30,36 @@ class Backoffice_Repo
         Database::close();
     }
 
+    static public function GetTransactionDetails($transaction_id)
+    {
+        $link = Database::connect();
+
+        $sql = "SELECT 
+                td.IDProduct, 
+                p.ProductName, 
+                td.Qty, 
+                p.PricePerUnit, 
+                (td.Qty * p.PricePerUnit) AS TotalPrice 
+            FROM 
+                TransactionDetail td
+            INNER JOIN 
+                Product p 
+            ON 
+                td.IDProduct = p.IDProduct
+            WHERE 
+                td.IDtransaction = '$transaction_id'";
+
+        $result = mysqli_query($link, $sql);
+
+        if (!$result) {
+            throw new Exception("Error fetching transaction details: " . mysqli_error($link));
+        }
+
+        Database::close();
+        return $result;
+    }
+
+
     static public function CreatePDF($nextid)
     {
         try {

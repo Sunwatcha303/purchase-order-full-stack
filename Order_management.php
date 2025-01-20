@@ -62,11 +62,24 @@ $result_status = mysqli_query($link, $sql_status);
         .content {
             flex: 1;
             padding: 20px;
-            overflow-y: auto;
+
         }
 
         table {
             margin-top: 20px;
+        }
+
+        #orderList {
+            height: 100vh;
+        }
+
+        .btn btn-primary btn-sm {
+            margin-right: 10px;
+        }
+
+        .dropdown-menu {
+            max-height: 300px;
+            overflow-y: auto;
         }
     </style>
 </head>
@@ -101,7 +114,7 @@ $result_status = mysqli_query($link, $sql_status);
             }).addClass('active');
 
             $.ajax({
-                url: './service/fetch_orders.php',
+                url: './service/get_orders_by_status.php',
                 method: 'GET',
                 data: { status: statusId },
                 success: function (data) {
@@ -114,8 +127,17 @@ $result_status = mysqli_query($link, $sql_status);
         }
 
         function confirmUpdate(idTransaction, statusId) {
+            let confirmText = '';
+
+            if (statusId === '7') { // หากเป็นการยกเลิก
+                confirmText = '✖✖ Cancel ✖✖';
+
+            } else { // หากเป็นการยืนยัน
+                confirmText = '✔✔ Submit ✔✔';
+            }
             Swal.fire({
-                title: 'Are you sure?',
+                title: 'Are you sure? ',
+                text: confirmText,
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -138,7 +160,11 @@ $result_status = mysqli_query($link, $sql_status);
                 success: function (response) {
                     console.log(response)
                     Swal.fire('Success!', 'Status updated successfully.', 'success').then(() => {
-                        filterOrders(statusId-1)
+                        if (statusId != 7) {
+                            filterOrders(statusId - 1)
+                        } else {
+                            filterOrders(statusId)
+                        }
                     });
 
                 },

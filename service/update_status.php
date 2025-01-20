@@ -8,7 +8,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if($idStatus == 2){
         Backoffice_Repo::CreatePDF($idTransaction);
     }
-    // header("Location: ../Backoffice.php");
 }
 
 mysqli_close($link);

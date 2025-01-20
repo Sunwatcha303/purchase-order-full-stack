@@ -164,7 +164,7 @@ $row = mysqli_fetch_row($msresult);
 
         <!-- Back Button -->
         <div class='button-container-profile'>
-            <a href='Order.php'><button class='btn'>Back</button></a>
+            <a href='Product.php'><button class='btn'>Back</button></a>
         </div>
     </div>
 
@@ -192,8 +192,11 @@ $row = mysqli_fetch_row($msresult);
                 success: function (response) {
                     const result = JSON.parse(response);
                     if (result.success) {
-                        Swal.fire('Success!', result.message, 'success');
-                        window.location.reload();
+                        Swal.fire('Success!', 'Status updated successfully.', 'success').then(() => {
+                            // filterOrders(statusId-1)
+                            window.location.reload();
+                        });
+
                     } else {
                         Swal.fire('Error!', result.message, 'error');
                     }
@@ -213,9 +216,9 @@ $row = mysqli_fetch_row($msresult);
                     const result = JSON.parse(response);
                     if (result.success) {
                         Swal.fire('Success!', 'Status updated successfully.', 'success').then(() => {
-                        // filterOrders(statusId-1)
-                        window.location.reload();
-                    });
+                            // filterOrders(statusId-1)
+                            window.location.reload();
+                        });
 
                     } else {
                         Swal.fire('Error!', result.message, 'error');

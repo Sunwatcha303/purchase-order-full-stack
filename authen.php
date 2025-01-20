@@ -10,7 +10,7 @@ $link = mysqli_connect("localhost", "root", "", "demo", 3307);
 $query = "SELECT * FROM Customer WHERE IDCust = $id LIMIT 1";
 $result = mysqli_query($link, $query);
 if (mysqli_num_rows($result) > 0) {
-    header('Location: Order.php');
+    header('Location: Product.php');
     exit;
 }
 session_unset();
