@@ -5,6 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Confirm Order</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -74,11 +78,35 @@
             <a href="Cart.php">
                 <button class="button cancel">ยกเลิก</button>
             </a>
-            <form action="PlaceOrder.php" method="post" style="display: inline;">
-                <button type="submit" class="button confirm">ตกลง</button>
-            </form>
+            <button type="submit" class="button confirm" onclick="handleConfirm()">ตกลง</button>
         </div>
     </div>
+    <script>
+        function handleConfirm() {
+            $.ajax({
+                url: './service/place_order.php',
+                method: 'get',
+                success: function (response) {
+                    try {
+                        const result = JSON.parse(response);
+                        if (result.success) {
+                            Swal.fire('Success!', result.message, 'success').then(() => {
+                                window.location.href = 'Product.php';
+                            });
+                        } else {
+                            Swal.fire('Error!', result.message, 'error');
+                        }
+                    } catch (e) {
+                        Swal.fire('Error!', 'Invalid server response.', 'error');
+                        console.error('Parsing error:', e, response);
+                    }
+                },
+                error: function () {
+                    Swal.fire('Error!', result.message, 'error');
+                }
+            });
+        }
+    </script>
 </body>
 
 </html>
