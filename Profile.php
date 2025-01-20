@@ -40,7 +40,7 @@ $row = mysqli_fetch_row($msresult);
         }
 
         .container-profile {
-            max-width: 800px;
+            max-width: 100%;
             margin: auto;
             padding: 20px;
         }
@@ -90,6 +90,9 @@ $row = mysqli_fetch_row($msresult);
             cursor: pointer;
             text-transform: uppercase;
             font-size: 0.9rem;
+            position: fixed;
+            top: 20px;
+            left: 20px;
         }
 
         .btn:hover {
@@ -153,7 +156,8 @@ $row = mysqli_fetch_row($msresult);
                         <th>Timestamp</th>
                         <th>Status</th>
                         <th>Action</th>
-                        <th>Reciept</th>
+                        <th>Receipt</th>
+                        <th>PO</th>
                     </tr>
                 </thead>
                 <tbody>

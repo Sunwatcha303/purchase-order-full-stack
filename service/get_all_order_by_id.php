@@ -13,17 +13,19 @@ while ($row = mysqli_fetch_row($msresult)) {
     }
     if ($row[2] !== "Completed" && $row[2] !== "Cancelled") {
         echo "<input class='btn-danger btn-sm' type=button value=Cancel onClick=confirmCancel($row[0])></input>";
-    }
-    else{
+    } else {
         echo "No action";
     }
     echo "</td>
     <td>";
     if ($row[2] === "Completed") {
-        echo "<a href=reciepts/$row[0].pdf>view receipt</a>";
-    }else{
+        echo "<a href=receipts/$row[0].pdf>view receipt</a>";
+    } else {
         echo "receipt unavailable";
     }
+    echo "</td>
+    <td>";
+    echo "<a href=PO/$row[0].pdf>view PO</a>";
     echo "</td></tr>";
 }
 ?>
