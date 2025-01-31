@@ -75,7 +75,7 @@ class Order_Repo
                 }
             }
             Order_Repo::UpdateStatusOrder($link, $idStatus, $idTransaction);
-            Order_Repo::CreateReciept($link, $idTransaction);
+            Order_Repo::CreateReceipt($link, $idTransaction);
             mysqli_commit($link);
         } catch (Exception $e) {
             Database::rollback();
@@ -137,7 +137,7 @@ class Order_Repo
         return false;
     }
 
-    static private function CreateReciept($link, $nextid)
+    static private function CreateReceipt($link, $nextid)
     {
         try {
             // Create an instance of mPDF with custom configuration
@@ -250,8 +250,8 @@ class Order_Repo
             // Write HTML to the PDF
             $mpdf->WriteHTML($html);
 
-            // Save the PDF to the 'reciepts' folder
-            $mpdf->Output(__DIR__ . '/../reciepts/' . $nextid . '.pdf', 'F');
+            // Save the PDF to the 'receipts' folder
+            $mpdf->Output(__DIR__ . '/../receipts/' . $nextid . '.pdf', 'F');
             // Uncomment this to display the PDF directly in the browser
             // $mpdf->Output();
 
@@ -371,7 +371,6 @@ class Order_Repo
             // Write HTML to the PDF
             $mpdf->WriteHTML($html);
 
-            // Save the PDF to the 'reciepts' folder
             $mpdf->Output(__DIR__ . '/../PO/' . $nextid . '.pdf', 'F');
             // Uncomment this to display the PDF directly in the browser
             // $mpdf->Output();
