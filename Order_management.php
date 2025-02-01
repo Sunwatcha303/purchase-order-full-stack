@@ -81,6 +81,28 @@ $result_status = mysqli_query($link, $sql_status);
             max-height: 300px;
             overflow-y: auto;
         }
+
+        .button-container-report {
+            text-align: center;
+        }
+
+        .btn-report {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+        }
+
+        .btn-report:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 
@@ -104,7 +126,10 @@ $result_status = mysqli_query($link, $sql_status);
 
         </div>
     </div>
-
+    <!-- Back Button -->
+    <div class='button-container-report'>
+        <a href='report_dashboard.php'><button class='btn-report'>Report</button></a>
+    </div>
     <script>
         function filterOrders(statusId) {
             $('#statusList a').removeClass('active');
