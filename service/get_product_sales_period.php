@@ -1,23 +1,50 @@
 <?php
 include '../repository/report.php';
+include '../repository/dashboard.php';
 
-// Get the 'from' and 'to' parameters from the request
 $from = $_POST['from'];
 $to = $_POST['to'];
 
-// Fetch data from the repository
 $result = Report_Repo::get_product_sale($from, $to);
 
-if ($result->num_rows > 0) {
+$data = [];
+$productNames = [];
+$totalRevenue = [];
+$totalQuantities = [];
+
+if ($result->num_rows > 10) {
+    $count = 0;
     while ($row = $result->fetch_assoc()) {
-        echo "<tr>
-                <td>" . $row["ProductName"] . "</td>
-                <td>" . $row["TotalQuantitySold"] . "</td>
-                <td>" . $row["TotalRevenue"] . "</td>
-                <td>" . $row["NumberOfTransactions"] . "</td>
-              </tr>";
+        $data[] = [
+            'ProductName' => $row['ProductName'],
+            'TotalQuantitySold' => $row['TotalQuantitySold'],
+            'TotalRevenue' => $row['TotalRevenue'],
+            'NumberOfTransactions' => $row['NumberOfTransactions']
+        ];
+        if ($count++ < 10) {
+            $productNames[] = $row['ProductName'];
+            $totalRevenue[] = $row['TotalRevenue'];
+            $totalQuantities[] = $row['TotalQuantitySold'];
+        }
     }
 } else {
-    echo "<tr><td colspan='4'>No results found</td></tr>";
+    $data[] = ['message' => 'No results found'];
 }
+
+if (empty($productNames)) {
+    header('Content-Type: application/json');
+    echo json_encode(['data' => $data, 'chart' => null]);
+    exit;
+}
+
+$barBase64Image = Dashboard_Repo::createBarChart("Top 10 Product Revenue", $productNames, $totalRevenue, );
+$pieBase64Image = Dashboard_Repo::createPieChart("Top 10 Product Quantity Distribute", $productNames, $totalQuantities);
+
+header('Content-Type: application/json');
+echo json_encode([
+    'data' => $data,
+    'barChart' => 'data:image/png;base64,' . $barBase64Image,
+    'pieChart' => 'data:image/png;base64,' . $pieBase64Image
+]);
+
 ?>
